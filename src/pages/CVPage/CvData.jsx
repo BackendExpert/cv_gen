@@ -27,6 +27,13 @@ const CvData = () => {
         cvprojects: [{
             projectname: '',
             projectdesc: '',
+        }],
+        cveducation: [{
+            place: '',
+            course: '',
+            startat: '',
+            endat: '',
+            aditionalinfo: '',
         }]
     })
 
@@ -82,6 +89,15 @@ const CvData = () => {
         }));
     };
 
+    const headleEducation = (index, field, value) => {
+        const updatededu = [...datacv.cveducation];
+        updatededu[index][field] = value;
+        setdatacv((prevData) => ({
+            ...prevData,
+            cveducation: updatededu,
+        }));
+    };
+
     const addSocialLink = () => {
         if (datacv.socialLinks.length < 6) {
             setdatacv((prevData) => ({
@@ -116,6 +132,14 @@ const CvData = () => {
         }
     };
 
+    const addeducation = () => {
+        if (datacv.cveducation.length < 6) {
+            setdatacv((prevData) => ({
+                ...prevData,
+                cveducation: [...prevData.cveducation, { place: '', course: '', startat: '', endat: '', aditionalinfo: '' }]
+            }));
+        }
+    };
 
     const removeSocialLink = (index) => {
         const updatedLinks = datacv.socialLinks.filter((_, i) => i !== index);
@@ -146,6 +170,15 @@ const CvData = () => {
         setdatacv((prevData) => ({
             ...prevData,
             cvprojects: updateproject,
+        }));
+    };
+
+
+    const removeeducation = (index) => {
+        const updateedu = datacv.cveducation.filter((_, i) => i !== index);
+        setdatacv((prevData) => ({
+            ...prevData,
+            cveducation: updateedu,
         }));
     };
 
@@ -432,6 +465,85 @@ const CvData = () => {
                                     onClick={addworkex}
                                 >
                                     Add Work Experience
+                                </button>
+                            </div>
+
+
+                            <div className="bg-gray-200/50 border border-gray-200 p-2 my-4">
+                                <p className="text-blue-500 mb-2">Education</p>
+                                {datacv.cveducation.map((edu, index) => (
+                                    <div className="my-4" key={index}>
+                                        <div className="w-full mr-2">
+                                            <InputDefult
+                                                placeholder="Enter Education Institute"
+                                                value={edu.place}
+                                                onChange={(e) =>
+                                                    headleEducation(index, 'place', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="flex my-2">
+                                            <div className="mr-1 w-full">
+                                                <p className="text-blue-500 mb-2">Start Date</p>
+                                                <InputDefult
+                                                    type={'date'}
+                                                    value={edu.startat}
+                                                    onChange={(e) =>
+                                                        headleEducation(index, 'startat', e.target.value)
+                                                    }
+                                                />
+                                            </div>
+                                            <div className="mr-1 w-full ">
+                                                <p className="text-blue-500 mb-2">End Date</p>
+                                                <InputDefult
+                                                    type={'date'}
+                                                    value={edu.endat}
+                                                    onChange={(e) =>
+                                                        headleEducation(index, 'endat', e.target.value)
+                                                    }
+                                                />
+                                            </div>
+                                        </div>
+                                        <div className="w-full mr-2">
+                                            <InputDefult
+                                                placeholder="Enter Course"
+                                                value={edu.course}
+                                                onChange={(e) =>
+                                                    headleEducation(index, 'course', e.target.value)
+                                                }
+                                            />
+                                        </div>
+
+                                        <div className="">
+                                            <p className="text-blue-500 mb-2 mt-3">Course Information</p>
+                                            <div className="py-2">
+                                                <InputDefult
+                                                    placeholder="Enter Course Information"
+                                                    value={edu.aditionalinfo}
+                                                    onChange={(e) =>
+                                                        headleEducation(index, 'aditionalinfo', e.target.value)
+                                                    }
+                                                />
+                                            </div>
+
+                                        </div>
+                                        {/* Remove Button */}
+                                        <button
+                                            type="button"
+                                            className="ml-2 text-red-500"
+                                            onClick={() => removeeducation(index)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                {/* Add Social Link Button */}
+                                <button
+                                    type="button"
+                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    onClick={addeducation}
+                                >
+                                    Add Education
                                 </button>
                             </div>
                         </div>
