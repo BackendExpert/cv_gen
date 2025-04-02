@@ -1,10 +1,7 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import HomePage from './pages/HomePage/HeroSection'
 import PageCV from './pages/CVPage/PageCV'
+import HomePage from './pages/HomePage/HomePage'
 
 function App() {
 
