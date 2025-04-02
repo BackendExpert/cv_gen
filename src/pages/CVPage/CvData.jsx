@@ -23,6 +23,10 @@ const CvData = () => {
         cvskills: [{
             title: '',
             skills: '',
+        }],
+        cvprojects: [{
+            projectname: '',
+            projectdesc: '',
         }]
     })
 
@@ -69,6 +73,15 @@ const CvData = () => {
         }));
     };
 
+    const headleProjects = (index, field, value) => {
+        const updatedprojects = [...datacv.cvprojects];
+        updatedprojects[index][field] = value;
+        setdatacv((prevData) => ({
+            ...prevData,
+            cvprojects: updatedprojects,
+        }));
+    };
+
     const addSocialLink = () => {
         if (datacv.socialLinks.length < 6) {
             setdatacv((prevData) => ({
@@ -94,6 +107,16 @@ const CvData = () => {
         }));
     };
 
+    const addproject = () => {
+        if (datacv.workex.length < 6) {
+            setdatacv((prevData) => ({
+                ...prevData,
+                cvprojects: [...prevData.cvprojects, { projectname: '', projectdesc: '' }]
+            }));
+        }
+    };
+
+
     const removeSocialLink = (index) => {
         const updatedLinks = datacv.socialLinks.filter((_, i) => i !== index);
         setdatacv((prevData) => ({
@@ -115,6 +138,14 @@ const CvData = () => {
         setdatacv((prevData) => ({
             ...prevData,
             cvskills: updateskill,
+        }));
+    };
+
+    const removeproject = (index) => {
+        const updateproject = datacv.cvprojects.filter((_, i) => i !== index);
+        setdatacv((prevData) => ({
+            ...prevData,
+            cvprojects: updateproject,
         }));
     };
 
@@ -212,7 +243,7 @@ const CvData = () => {
                                         <div className="w-full">
                                             <InputDefult
                                                 placeholder="Enter Skills"
-                                                value={skls.skills} 
+                                                value={skls.skills}
                                                 onChange={(e) =>
                                                     headleSkills(index, 'skills', e.target.value)
                                                 }
@@ -234,7 +265,52 @@ const CvData = () => {
                                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
                                     onClick={addskills}
                                 >
-                                    Add Social Link
+                                    Add Skill Set
+                                </button>
+                            </div>
+
+
+
+                            <div className="bg-gray-200/50 border border-gray-200 p-2 my-4">
+                                <p className="text-blue-500 mb-2">Projects</p>
+                                {datacv.cvprojects.map((projects, index) => (
+                                    <div className="my-2" key={index}>
+                                        <div className="w-full my-2">
+                                            <InputDefult
+                                                placeholder="Enter Project Name"
+                                                value={projects.projectname}
+                                                onChange={(e) =>
+                                                    headleProjects(index, 'projectname', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="w-full">
+                                            <InputDefult
+                                                placeholder="Enter Project Title"
+                                                value={projects.projectdesc}
+                                                onChange={(e) =>
+                                                    headleProjects(index, 'projectdesc', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        {/* Remove Button */}
+                                        <button
+                                            type="button"
+                                            className="ml-2 text-red-500"
+                                            onClick={() => removeproject(index)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                {/* Add Social Link Button */}
+                                <button
+                                    type="button"
+                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    onClick={addproject}
+                                    disabled={datacv.cvprojects.length >= 6}
+                                >
+                                    Add Project
                                 </button>
                             </div>
 
@@ -401,12 +477,14 @@ const CvData = () => {
                                         <div className="text-sm">
                                             {datacv.workex.length > 0 ? (
                                                 datacv.workex.map((work, index) => (
-                                                    <div className="mr-12">
+                                                    <div className="mr-12" style={{ fontSize: '12px' }}>
                                                         <div className="">
                                                             <h1 className="flex text-sm font-semibold text-blue-700">
                                                                 {work.position} - {work.place}
                                                             </h1>
-                                                            <p className="text-gray-500 pl-2 text-sm font-semibold">({formatDate(work.startat)} - {formatDate(work.endat)})</p>
+                                                            <p className="text-gray-500 pl-2 text-sm font-semibold">
+                                                                ({formatDate(work.startat)} - {work.endat ? formatDate(work.endat) : <span>Present</span>})
+                                                            </p>
                                                         </div>
 
                                                         <div className="">
@@ -424,6 +502,39 @@ const CvData = () => {
                                                             </div>
                                                         </div>
 
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p>No social links added</p>
+                                            )}
+                                        </div>
+                                        <h1 className="text-xl font-semibold -mt-1">Skills</h1>
+
+                                        <div className="text-sm">
+                                            {datacv.cvskills.length > 0 ? (
+                                                datacv.cvskills.map((skills, index) => (
+                                                    <div className="mr-12" style={{ fontSize: '12px' }}>
+                                                        <div className="flex">
+                                                            <div className="font-semibold text-blue-700">{skills.title}</div>
+                                                            <div className="ml-2 text-gray-500">{skills.skills}</div>
+                                                        </div>
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <p>No social links added</p>
+                                            )}
+                                        </div>
+
+                                        <h1 className="text-xl font-semibold -mt-1">Notable Projects</h1>
+
+                                        <div className="text-sm">
+                                            {datacv.cvprojects.length > 0 ? (
+                                                datacv.cvprojects.map((cvproject, index) => (
+                                                    <div className="mr-12" style={{ fontSize: '12px' }}>
+                                                        <div className="flex">
+                                                            <div className="font-semibold text-blue-700">{cvproject.projectname}</div>
+                                                            <div className="ml-2 text-gray-500">{cvproject.projectdesc}</div>
+                                                        </div>
                                                     </div>
                                                 ))
                                             ) : (
