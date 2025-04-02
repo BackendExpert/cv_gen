@@ -19,6 +19,10 @@ const CvData = () => {
             about1: '',
             about2: '',
             about3: '',
+        }],
+        cvskills: [{
+            title: '',
+            skills: '',
         }]
     })
 
@@ -27,12 +31,6 @@ const CvData = () => {
         const date = new Date(dateString);
         const options = { year: 'numeric', month: 'short' };
         return date.toLocaleDateString('en-US', options);
-    };
-
-    const handleDateChange = (e) => {
-        const newDate = e.target.value;
-        setDateValue(newDate);
-        setFormattedDate(formatDate(newDate));
     };
 
     const handleChange = (e) => {
@@ -61,6 +59,16 @@ const CvData = () => {
         }));
     };
 
+
+    const headleSkills = (index, field, value) => {
+        const updatedSkills = [...datacv.cvskills];
+        updatedSkills[index][field] = value;
+        setdatacv((prevData) => ({
+            ...prevData,
+            cvskills: updatedSkills,
+        }));
+    };
+
     const addSocialLink = () => {
         if (datacv.socialLinks.length < 6) {
             setdatacv((prevData) => ({
@@ -79,6 +87,13 @@ const CvData = () => {
         }
     };
 
+    const addskills = () => {
+        setdatacv((prevData) => ({
+            ...prevData,
+            cvskills: [...prevData.cvskills, { title: '', skills: '' }]
+        }));
+    };
+
     const removeSocialLink = (index) => {
         const updatedLinks = datacv.socialLinks.filter((_, i) => i !== index);
         setdatacv((prevData) => ({
@@ -92,6 +107,14 @@ const CvData = () => {
         setdatacv((prevData) => ({
             ...prevData,
             workex: updateworkex,
+        }));
+    };
+
+    const removeskills = (index) => {
+        const updateskill = datacv.cvskills.filter((_, i) => i !== index);
+        setdatacv((prevData) => ({
+            ...prevData,
+            cvskills: updateskill,
         }));
     };
 
@@ -167,6 +190,49 @@ const CvData = () => {
                                     className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
                                     onClick={addSocialLink}
                                     disabled={datacv.socialLinks.length >= 6}
+                                >
+                                    Add Social Link
+                                </button>
+                            </div>
+
+
+                            <div className="bg-gray-200/50 border border-gray-200 p-2 my-4">
+                                <p className="text-blue-500 mb-2">Skills</p>
+                                {datacv.cvskills.map((skls, index) => (
+                                    <div className="my-2" key={index}>
+                                        <div className="w-full my-2">
+                                            <InputDefult
+                                                placeholder="Enter Title of Skills"
+                                                value={skls.title}
+                                                onChange={(e) =>
+                                                    headleSkills(index, 'title', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="w-full">
+                                            <InputDefult
+                                                placeholder="Enter Skills"
+                                                value={skls.skills} 
+                                                onChange={(e) =>
+                                                    headleSkills(index, 'skills', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        {/* Remove Button */}
+                                        <button
+                                            type="button"
+                                            className="ml-2 text-red-500"
+                                            onClick={() => removeskills(index)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                {/* Add Social Link Button */}
+                                <button
+                                    type="button"
+                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    onClick={addskills}
                                 >
                                     Add Social Link
                                 </button>
