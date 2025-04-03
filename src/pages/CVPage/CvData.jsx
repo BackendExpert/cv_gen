@@ -388,7 +388,7 @@ const CvData = () => {
                                                 placeholder="Enter View Text"
                                                 value={link.displayname}
                                                 onChange={(e) =>
-                                                    handleSocialLinkChange(index, 'displaynames', e.target.value)
+                                                    headleProfileLinks(index, 'displayname', e.target.value)
                                                 }
                                             />
                                         </div>
@@ -397,7 +397,7 @@ const CvData = () => {
                                                 placeholder="Enter Link"
                                                 value={link.link}
                                                 onChange={(e) =>
-                                                    handleSocialLinkChange(index, 'link', e.target.value)
+                                                    headleProfileLinks(index, 'link', e.target.value)
                                                 }
                                             />
                                         </div>
@@ -752,6 +752,25 @@ const CvData = () => {
                                                             </div>
                                                             <div className="">
                                                                 {cvedu.aditionalinfo}
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p>No social links added</p>
+                                                )}
+                                            </div>
+
+                                            <h1 className="text-xl font-semibold -mt-1">Links & Profiles</h1>
+
+                                            <div className="text-sm">
+                                                {datacv.profilelinks.length > 0 ? (
+                                                    datacv.profilelinks.map((profile, index) => (
+                                                        <div className="mr-12" style={{ fontSize: '12px' }}>
+                                                            <div className="flex">
+                                                                <div className="font-semibold text-blue-700">{profile.displayname}</div>
+                                                                <div className="ml-2 text-black underline">
+                                                                    <a href={profile.link}>{profile.link}</a>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     ))
