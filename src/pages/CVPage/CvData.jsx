@@ -3,6 +3,7 @@ import InputDefult from '../../components/InputDefult'
 import InputTextArea from '../../components/InputTextArea'
 import html2pdf from 'html2pdf.js';
 import { GoDotFill } from "react-icons/go";
+import { data } from 'autoprefixer';
 
 const CvData = () => {
     const [datacv, setdatacv] = useState({
@@ -34,6 +35,10 @@ const CvData = () => {
             startat: '',
             endat: '',
             aditionalinfo: '',
+        }],
+        profilelinks: [{
+            displayname: '',
+            link: '',
         }]
     })
 
@@ -98,6 +103,15 @@ const CvData = () => {
         }));
     };
 
+    const headleProfileLinks = (index, field, value) => {
+        const updatedprolinks = [...datacv.profilelinks];
+        updatedprolinks[index][field] = value;
+        setdatacv((prevData) => ({
+            ...prevData,
+            profilelinks: updatedprolinks,
+        }));
+    };
+
     const addSocialLink = () => {
         if (datacv.socialLinks.length < 6) {
             setdatacv((prevData) => ({
@@ -141,6 +155,15 @@ const CvData = () => {
         }
     };
 
+    const addprofilelinks = () => {
+        if (datacv.profilelinks.length < 8) {
+            setdatacv((prevData) => ({
+                ...prevData,
+                profilelinks: [...prevData.profilelinks, { displayname: '', link: '' }]
+            }));
+        }
+    };
+
     const removeSocialLink = (index) => {
         const updatedLinks = datacv.socialLinks.filter((_, i) => i !== index);
         setdatacv((prevData) => ({
@@ -179,6 +202,14 @@ const CvData = () => {
         setdatacv((prevData) => ({
             ...prevData,
             cveducation: updateedu,
+        }));
+    };
+
+    const removeprofilelink = (index) => {
+        const updateprofilelink = datacv.profilelinks.filter((_, i) => i !== index);
+        setdatacv((prevData) => ({
+            ...prevData,
+            profilelinks: updateprofilelink,
         }));
     };
 
@@ -344,6 +375,50 @@ const CvData = () => {
                                     disabled={datacv.cvprojects.length >= 6}
                                 >
                                     Add Project
+                                </button>
+                            </div>
+
+
+                            <div className="bg-gray-200/50 border border-gray-200 p-2">
+                                <p className="text-blue-500 mb-2">Profile Links (max 8)</p>
+                                {datacv.profilelinks.map((link, index) => (
+                                    <div className="flex my-2" key={index}>
+                                        <div className="w-full mr-2">
+                                            <InputDefult
+                                                placeholder="Enter View Text"
+                                                value={link.displayname}
+                                                onChange={(e) =>
+                                                    handleSocialLinkChange(index, 'displaynames', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="w-full ml-2">
+                                            <InputDefult
+                                                placeholder="Enter Link"
+                                                value={link.link}
+                                                onChange={(e) =>
+                                                    handleSocialLinkChange(index, 'link', e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        {/* Remove Button */}
+                                        <button
+                                            type="button"
+                                            className="ml-2 text-red-500"
+                                            onClick={() => removeprofilelink(index)}
+                                        >
+                                            Remove
+                                        </button>
+                                    </div>
+                                ))}
+                                {/* Add Social Link Button */}
+                                <button
+                                    type="button"
+                                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                                    onClick={addprofilelinks}
+                                    disabled={datacv.socialLinks.length >= 8}
+                                >
+                                    Add Profile Link
                                 </button>
                             </div>
 
@@ -652,6 +727,39 @@ const CvData = () => {
                                             ) : (
                                                 <p>No social links added</p>
                                             )}
+                                        </div>
+
+                                        <h1 className="text-xl font-semibold -mt-1">Education</h1>
+
+                                        <div className="text-sm">
+                                            <div className="grid grid-cols-2 gap-4">
+                                                {datacv.cveducation.length > 0 ? (
+                                                    datacv.cveducation.map((cvedu, index) => (
+                                                        <div className="mr-12" style={{ fontSize: '12px' }}>
+                                                            <div className="flex">
+                                                                <div className="font-semibold text-blue-700">{cvedu.place}</div>
+                                                                <div className="ml-2 text-gray-500">
+                                                                    <p className="text-blue-500 pl-2 text-sm font-semibold">
+                                                                        ({formatDate(cvedu.startat)} - {cvedu.endat ? formatDate(cvedu.endat) : <span>Present</span>})
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="">
+                                                                <div className="flex text-gray-500">
+                                                                    <h1 className="font-semibold">Institute : </h1>
+                                                                    <p className="pl-4">{cvedu.place}</p>
+                                                                </div>
+                                                            </div>
+                                                            <div className="">
+                                                                {cvedu.aditionalinfo}
+                                                            </div>
+                                                        </div>
+                                                    ))
+                                                ) : (
+                                                    <p>No social links added</p>
+                                                )}
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
